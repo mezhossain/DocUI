@@ -1,0 +1,84 @@
+Ext.define('DocUI.view.doc.DocDetails', {
+    extend: 'Ext.ux.LiveSearchGridPanel',
+    xtype: 'details',
+    controller: 'docs',
+    viewModel: { type: 'docs' },
+    bind: { store: '{CurrentDetails}', selection: '{selectedDetails}' },
+    scrollable: true,
+    height: 527,
+	width: 743,
+    columns: [{
+        dataIndex: 'id_doc_details_ver',
+        text: 'id_doc_details_ver',
+    }, {
+        dataIndex: 'is_active',
+        text: 'is_active'
+    }, {  
+        dataIndex: 'id_env_key',
+        text: 'id_env_key'
+    }, {
+        dataIndex: 'id_user_mod_key',
+        text: 'id_user_mod_key'
+    }, {
+        dataIndex: 'id_user_mod_key',
+        text: 'dtt_mod'
+    }, {
+        dataIndex: 'id_event_key',
+        text: 'id_event_key'
+    }, {
+        dataIndex: 'id_state_key',
+        text: 'id_state_key',
+    }, {
+        dataIndex: 'id_action_key',
+        text: 'id_action_key'
+    }, {
+        dataIndex: 'id_doc_key',
+        text: 'id_doc_key', 
+    }, {
+        dataIndex: 'part_no',
+        text: 'part_no',
+    }, {
+        dataIndex: 'item_qty',
+        text: 'item_qty',
+    }, {
+        dataIndex: 'reference_no',
+        text: 'reference_no'
+    }, {
+        dataIndex: 'tx_item_name',
+        text: 'tx_item_name',
+    }, {
+        dataIndex: 'tx_item_code',
+        text: 'tx_item_code',
+    }, {
+        dataIndex: 'tx_rent',
+        text: 'tx_rent',
+    }, {
+        dataIndex: 'tx_pack',
+        text: 'tx_pack',
+    }, {
+        dataIndex: 'tx_item_description',
+        text: 'tx_item_description',
+    }, {
+        dataIndex: 'tx_property_address',
+        text: 'tx_property_address', 
+    }, {
+        dataIndex: 'flt_trade',
+        text: 'flt_trade',
+    }, {
+        dataIndex: 'flt_total_price',
+        text: 'flt_total_price',
+    }, {
+        dataIndex: 'flt_net_value',
+        text: 'flt_net_value', 
+    }, {
+        dataIndex: 'flt_value_of_goods',
+        text: 'flt_value_of_goods',
+    }, {
+        dataIndex: 'flt_insurance_premium',
+        text: 'flt_insurance_premium',
+    }],
+
+    listeners: {
+        itemdblclick: 'updateDocDetails'
+    }
+});
