@@ -8,74 +8,62 @@ Ext.define('DocUI.view.doc.DocDetails', {
     height: 527,
 	width: 743,
     columns: [{
-        dataIndex: 'id_doc_details_ver',
-        text: 'id_doc_details_ver',
+        dataIndex: 'docDetailsId',
+        text: 'Doc Details ID',
     }, {
-        dataIndex: 'is_active',
-        text: 'is_active'
-    }, {  
-        dataIndex: 'id_env_key',
-        text: 'id_env_key'
+        dataIndex: 'docDetailsVer',
+        text: 'Doc Details Version',
     }, {
-        dataIndex: 'id_user_mod_key',
-        text: 'id_user_mod_key'
+        dataIndex: 'docId',
+        text: 'Doc ID', 
     }, {
-        dataIndex: 'id_user_mod_key',
-        text: 'dtt_mod'
+        dataIndex: 'partNo',
+        text: 'Part No.',
     }, {
-        dataIndex: 'id_event_key',
-        text: 'id_event_key'
+        dataIndex: 'itemQty',
+        text: 'Item Quantity',
     }, {
-        dataIndex: 'id_state_key',
-        text: 'id_state_key',
+        dataIndex: 'referenceNo',
+        text: 'Reference No.'
     }, {
-        dataIndex: 'id_action_key',
-        text: 'id_action_key'
+        dataIndex: 'itemName',
+        text: 'Item Name',
     }, {
-        dataIndex: 'id_doc_key',
-        text: 'id_doc_key', 
+        dataIndex: 'itemCode',
+        text: 'Item Code',
     }, {
-        dataIndex: 'part_no',
-        text: 'part_no',
+        dataIndex: 'rent',
+        text: 'Rent',
     }, {
-        dataIndex: 'item_qty',
-        text: 'item_qty',
+        dataIndex: 'pack',
+        text: 'Pack',
     }, {
-        dataIndex: 'reference_no',
-        text: 'reference_no'
+        dataIndex: 'itemDescription',
+        text: 'Item Description',
     }, {
-        dataIndex: 'tx_item_name',
-        text: 'tx_item_name',
+        dataIndex: 'propertyAddress',
+        text: 'Property Address', 
     }, {
-        dataIndex: 'tx_item_code',
-        text: 'tx_item_code',
+        dataIndex: 'trade',
+        text: 'Trade',
     }, {
-        dataIndex: 'tx_rent',
-        text: 'tx_rent',
+        dataIndex: 'unitPrice',
+        text: 'Unit Price',
     }, {
-        dataIndex: 'tx_pack',
-        text: 'tx_pack',
+        dataIndex: 'totalPrice',
+        text: 'Total Price',
     }, {
-        dataIndex: 'tx_item_description',
-        text: 'tx_item_description',
+        dataIndex: 'netValue',
+        text: 'Net Value', 
     }, {
-        dataIndex: 'tx_property_address',
-        text: 'tx_property_address', 
+        dataIndex: 'valueOfGoods',
+        text: 'Value of Goods',
     }, {
-        dataIndex: 'flt_trade',
-        text: 'flt_trade',
+        dataIndex: 'insurancePremium',
+        text: 'Insurance Premium',
     }, {
-        dataIndex: 'flt_total_price',
-        text: 'flt_total_price',
-    }, {
-        dataIndex: 'flt_net_value',
-        text: 'flt_net_value', 
-    }, {
-        dataIndex: 'flt_value_of_goods',
-        text: 'flt_value_of_goods',
-    }, {
-        dataIndex: 'flt_insurance_premium',
-        text: 'flt_insurance_premium',
+        dataIndex: 'modifiedOn',
+        text: 'Modified On',
     }],
 
     listeners: {

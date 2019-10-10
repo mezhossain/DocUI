@@ -23,9 +23,19 @@ Ext.define('DocUI.view.doc.DocViewModel', {
             autoDestroy: false,
             proxy : {
                 type : 'rest',
+                method: 'GET',
+                // headers : {
+                //     'Content-Type' : 'application/xml',
+                //     'Access-Control-Allow-Origin': 'http://10.33.56.125:8080',               
+                // },
+                // cors: true,
+                // useDefaultXhrHeader: false,
+                // withCredentials: true,
                 url: 'docs.json',
+                // url: '/doc',
                 reader : {
-                    type: 'json'
+                    type: 'json',
+                    //rootProperty: 'List',
                 },
                 writer : {
                     writeAllFields : true
@@ -34,7 +44,7 @@ Ext.define('DocUI.view.doc.DocViewModel', {
         },
         Details: {
             model: 'DocUI.model.DocDetails',
-            storeId: 'details', 
+            storeId: 'details',
             alias: 'store.details',
             autoLoad: true,
             pageSize: 0,
@@ -45,8 +55,16 @@ Ext.define('DocUI.view.doc.DocViewModel', {
             proxy : {
                 type : 'rest',
                 url: 'details.json',
+                // url: '/docDetails',
+                headers : {
+                    'Content-Type' : 'application/xml'
+                },
+                cors: true,
+                // useDefaultXhrHeader: false,
+                withCredentials: true,
                 reader : {
-                    type: 'json'
+                    type: 'json',
+                    rootProperty: 'items'
                 },
                 writer : {
                     writeAllFields : true
@@ -63,7 +81,7 @@ Ext.define('DocUI.view.doc.DocViewModel', {
             autoDestroy: false,
             proxy: {
                 type: 'localstorage',
-                // url: 'currentdetails.json',
+                url: 'currentdetails.json',
                 reader: {
                     type: 'json',
                     rootProperty: 'items'

@@ -4,14 +4,13 @@ Ext.define('DocUI.view.doc.DocController', {
 	alias: 'controller.docs',
 
 	onDoubleClick: function (dataview, record, item, index, e) {
-		var docKey = record.data['id_doc_key'];
+		var docKey = record.data['docId'];
 		console.log(docKey);
 		var docStore = Ext.data.StoreManager.lookup('docs');
-		var doc = docStore.findRecord('id_doc_key',docKey);
+		var doc = docStore.findRecord('docId',docKey);
 		var detailsStore = Ext.data.StoreManager.lookup('details');
-		var docdetails = detailsStore.findRecord('id_doc_key',docKey);
-		console.log(detailsStore);
-		var docdetailsgroup = detailsStore.queryRecords('id_doc_key',docKey);
+		var docdetails = detailsStore.findRecord('docId',docKey);
+		var docdetailsgroup = detailsStore.queryRecords('docId',docKey);
 		console.log(docdetailsgroup);
 		var dets = [];
 		var currentstore = Ext.data.StoreManager.lookup('currentdetails');
@@ -49,234 +48,198 @@ Ext.define('DocUI.view.doc.DocController', {
 					height: 350,
 					items: [{
 						xtype: 'textfield',
-						fieldLabel: 'id_doc_key',
-						name: 'id_doc_key',
-						value: record.data['id_doc_key'],
+						fieldLabel: 'Doc ID',
+						name: 'docId',
+						value: record.data['docId'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'id_doc_ver',
-						name: 'id_doc_ver',
-						value: record.data['id_doc_ver'],
+						fieldLabel: 'Doc Version',
+						name: 'docVer',
+						value: record.data['docVer'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'is_active',
-						name: 'is_active',
-						value: record.data['is_active'],
+						fieldLabel: 'Modified On',
+						name: 'modifiedOn',
+						value: record.data['modifiedOn'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'id_env_key',
-						name: 'id_env_key',
-						value: record.data['id_env_key'],
+						fieldLabel: 'Supplier Number',
+						name: 'supplierNumber',
+						value: record.data['supplierNumber'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'id_user_mod_key',
-						name: 'id_user_mod_key',
-						value: record.data['id_user_mod_key'],
+						fieldLabel: 'Delivery Note No.',
+						name: 'deliveryNoteNo',
+						value: record.data['deliveryNoteNo'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'dtt_mod',
-						name: 'dtt_mod',
-						value: record.data['dtt_mod'],
+						fieldLabel: 'Receipt Number',
+						name: 'receiptNo',
+						value: record.data['receiptNo'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'id_event_key',
-						name: 'id_event_key',
-						value: record.data['id_event_key'],
+						fieldLabel: 'Document Number',
+						name: 'documentNumber',
+						value: record.data['documentNumber'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'id_state_key',
-						name: 'id_state_key',
-						value: record.data['id_state_key'],
+						fieldLabel: 'Document Date',
+						name: 'documentDate',
+						value: record.data['documentDate'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'id_action_key',
-						name: 'id_action_key',
-						value: record.data['id_action_key'],
+						fieldLabel: 'Recipient Of Invoice',
+						name: 'recipientOfInvoice',
+						value: record.data['recipientOfInvoice'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'supplier_number',
-						name: 'supplier_number',
-						value: record.data['supplier_number'],
+						fieldLabel: 'VAT Number',
+						name: 'vatNumber',
+						value: record.data['vatNumber'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'delivery_note_no',
-						name: 'delivery_note_no',
-						value: record.data['delivery_note_no'],
+						fieldLabel: 'Despatch Date',
+						name: 'despatchDate',
+						value: record.data['despatchDate'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'receipt_number',
-						name: 'receipt_number',
-						value: record.data['receipt_number'],
+						fieldLabel: 'Invoice Number',
+						name: 'invoiceNumber',
+						value: record.data['invoiceNumber'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'document_number',
-						name: 'document_number',
-						value: record.data['document_number'],
+						fieldLabel: 'Currency',
+						name: 'currency',
+						value: record.data['currency'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'dt_document',
-						name: 'dt_document',
-						value: record.data['dt_document'],
+						fieldLabel: 'Account Number',
+						name: 'accountNumber',
+						value: record.data['accountNumber'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'recipient_of_invoice',
-						name: 'recipient_of_invoice',
-						value: record.data['recipient_of_invoice'],
+						fieldLabel: 'Voucher Number',
+						name: 'voucherNumber',
+						value: record.data['voucherNumber'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'vat_number',
-						name: 'vat_number',
-						value: record.data['vat_number'],
+						fieldLabel: 'Fax Number',
+						name: 'faxNumber',
+						value: record.data['faxNumber'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'dt_despatch',
-						name: 'dt_despatch',
-						value: record.data['dt_despatch'],
-						labelStyle: 'font-weight:bold'
-					},	{
-						xtype: 'textfield',
-						fieldLabel: 'tx_invoice_number',
-						name: 'tx_invoice_number',
-						value: record.data['tx_invoice_number'],
-						labelStyle: 'font-weight:bold'
-					},	{
-						xtype: 'textfield',
-						fieldLabel: 'tx_currency',
-						name: 'tx_currency',
-						value: record.data['tx_currency'],
-						labelStyle: 'font-weight:bold'
-					},	{
-						xtype: 'textfield',
-						fieldLabel: 'tx_account_number',
-						name: 'tx_account_number',
-						value: record.data['tx_account_number'],
-						labelStyle: 'font-weight:bold'
-					},	{
-						xtype: 'textfield',
-						fieldLabel: 'tx_voucher_number',
-						name: 'tx_voucher_number',
-						value: record.data['tx_voucher_number'],
-						labelStyle: 'font-weight:bold'
-					},	{
-						xtype: 'textfield',
-						fieldLabel: 'tx_fax_number',
-						name: 'tx_fax_number',
-						value: record.data['tx_fax_number'],
-						labelStyle: 'font-weight:bold'
-					},	{
-						xtype: 'textfield',
-						fieldLabel: 'tx_association_number',
-						name: 'tx_association_number',
-						value: record.data['tx_association_number'],
-						labelStyle: 'font-weight:bold'
-					},	{
-						xtype: 'textfield',
-						fieldLabel: 'tx_order_id',
-						name: 'tx_order_id',
-						value: record.data['tx_order_id'],
+						fieldLabel: 'Association Number',
+						name: 'associationNumber',
+						value: record.data['associationNumber'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textarea',
-						fieldLabel: 'tx_company_address',
-						name: 'tx_company_address',
-						value: record.data['tx_company_address'],
+						fieldLabel: 'Company Address',
+						name: 'companyAddress',
+						value: record.data['companyAddress'],
 						labelStyle: 'font-weight:bold',
 						height: 90
 					},	{
 						xtype: 'textarea',
-						fieldLabel: 'tx_invoice_to',
-						name: 'tx_invoice_to',
-						value: record.data['tx_invoice_to'],
+						fieldLabel: 'Invoice To',
+						name: 'invoiceTo',
+						value: record.data['invoiceTo'],
 						labelStyle: 'font-weight:bold',
 						height: 90
 					},	{
 						xtype: 'textarea',
-						fieldLabel: 'tx_deliver_to',
-						name: 'tx_deliver_to',
-						value: record.data['tx_deliver_to'],
+						fieldLabel: 'Deliver To',
+						name: 'deliverTo',
+						value: record.data['deliverTo'],
 						labelStyle: 'font-weight:bold',
 						height: 90
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'tx_delivery_note',
-						name: 'tx_delivery_note',
-						value: record.data['tx_delivery_note'],
+						fieldLabel: 'Order ID',
+						name: 'orderId',
+						value: record.data['orderId'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'tx_delivery_details',
-						name: 'tx_delivery_details',
-						value: record.data['tx_delivery_details'],
+						fieldLabel: 'Delivery Note',
+						name: 'deliveryNote',
+						value: record.data['deliveryNote'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'tx_payment_details',
-						name: 'tx_payment_details',
-						value: record.data['tx_payment_details'],
+						fieldLabel: 'Delivery Details',
+						name: 'deliveryDetails',
+						value: record.data['deliveryDetails'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'flt_vat',
-						name: 'flt_vat',
-						value: record.data['flt_vat'],
+						fieldLabel: 'Payment Details',
+						name: 'paymentDetails',
+						value: record.data['paymentDetails'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'flt_vat_rate',
-						name: 'flt_vat_rate',
-						value: record.data['flt_vat_rate'],
+						fieldLabel: 'VAT',
+						name: 'vat',
+						value: record.data['vat'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'flt_vat_payable',
-						name: 'flt_vat_payable',
-						value: record.data['flt_vat_payable'],
+						fieldLabel: 'VAT Rate',
+						name: 'vatRate',
+						value: record.data['vatRate'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'flt_invoice_amount',
-						name: 'flt_invoice_amount',
-						value: record.data['flt_invoice_amount'],
+						fieldLabel: 'VAT Payable',
+						name: 'vatPayable',
+						value: record.data['vatPayable'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'flt_total_before_vat',
-						name: 'flt_total_before_vat',
-						value: record.data['flt_total_before_vat'],
+						fieldLabel: 'Invoice Amount',
+						name: 'invoiceAmount',
+						value: record.data['invoiceAmount'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'flt_total_amount_due',
-						name: 'flt_total_amount_due',
-						value: record.data['flt_total_amount_due'],
+						fieldLabel: 'Total Before VAT',
+						name: 'totalBeforeVat',
+						value: record.data['totalBeforeVat'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'flt_discount',
-						name: 'flt_discount',
-						value: record.data['flt_discount'],
+						fieldLabel: 'Total Amount Due',
+						name: 'totalAmountDue',
+						value: record.data['totalAmountDue'],
 						labelStyle: 'font-weight:bold'
 					},	{
 						xtype: 'textfield',
-						fieldLabel: 'flt_net_invoice_total',
-						name: 'flt_net_invoice_total',
-						value: record.data['flt_net_invoice_total'],
+						fieldLabel: 'Discount',
+						name: 'discount',
+						value: record.data['discount'],
+						labelStyle: 'font-weight:bold'
+					},	{
+						xtype: 'textfield',
+						fieldLabel: 'Net Invoice Total',
+						name: 'netInvoiceTotal',
+						value: record.data['netInvoiceTotal'],
 						labelStyle: 'font-weight:bold'
 					}]
 				},	{
@@ -290,74 +253,59 @@ Ext.define('DocUI.view.doc.DocController', {
 					bind: { selection: '{selectedDetails}' },
 					scrollable: true,
 					columns: [{
-						dataIndex: 'id_doc_details_ver',
-						text: 'id_doc_details_ver',
+						dataIndex: 'docDetailsId',
+						text: 'Doc Details ID',
 					}, {
-						dataIndex: 'is_active',
-						text: 'is_active'
-					}, {  
-						dataIndex: 'id_env_key',
-						text: 'id_env_key'
+						dataIndex: 'docDetailsVer',
+						text: 'Doc Details Version', 
 					}, {
-						dataIndex: 'id_user_mod_key',
-						text: 'id_user_mod_key'
+						dataIndex: 'docId',
+						text: 'Doc ID', 
 					}, {
-						dataIndex: 'id_user_mod_key',
-						text: 'dtt_mod'
+						dataIndex: 'partNo',
+						text: 'Part No',
 					}, {
-						dataIndex: 'id_event_key',
-						text: 'id_event_key'
+						dataIndex: 'itemQty',
+						text: 'Item Quantity',
 					}, {
-						dataIndex: 'id_state_key',
-						text: 'id_state_key',
+						dataIndex: 'referenceNo',
+						text: 'Reference No.'
 					}, {
-						dataIndex: 'id_action_key',
-						text: 'id_action_key'
+						dataIndex: 'itemName',
+						text: 'Item Name',
 					}, {
-						dataIndex: 'id_doc_key',
-						text: 'id_doc_key', 
+						dataIndex: 'itemCode',
+						text: 'Item Code',
 					}, {
-						dataIndex: 'part_no',
-						text: 'part_no',
+						dataIndex: 'rent',
+						text: 'Rent',
 					}, {
-						dataIndex: 'item_qty',
-						text: 'item_qty',
+						dataIndex: 'tpack',
+						text: 'Pack',
 					}, {
-						dataIndex: 'reference_no',
-						text: 'reference_no'
+						dataIndex: 'itemDescription',
+						text: 'Item Description',
 					}, {
-						dataIndex: 'tx_item_name',
-						text: 'tx_item_name',
+						dataIndex: 'propertyAddress',
+						text: 'Property Address', 
 					}, {
-						dataIndex: 'tx_item_code',
-						text: 'tx_item_code',
+						dataIndex: 'trade',
+						text: 'Trade',
 					}, {
-						dataIndex: 'tx_rent',
-						text: 'tx_rent',
+						dataIndex: 'unitPrice',
+						text: 'Unit Price',
 					}, {
-						dataIndex: 'tx_pack',
-						text: 'tx_pack',
+						dataIndex: 'netValue',
+						text: 'Net Value', 
 					}, {
-						dataIndex: 'tx_item_description',
-						text: 'tx_item_description',
+						dataIndex: 'valueOfGoods',
+						text: 'Value of Goods',
 					}, {
-						dataIndex: 'tx_property_address',
-						text: 'tx_property_address', 
+						dataIndex: 'insurancePremium',
+						text: 'Insurance Premium',
 					}, {
-						dataIndex: 'flt_trade',
-						text: 'flt_trade',
-					}, {
-						dataIndex: 'flt_total_price',
-						text: 'flt_total_price',
-					}, {
-						dataIndex: 'flt_net_value',
-						text: 'flt_net_value', 
-					}, {
-						dataIndex: 'flt_value_of_goods',
-						text: 'flt_value_of_goods',
-					}, {
-						dataIndex: 'flt_insurance_premium',
-						text: 'flt_insurance_premium',
+						dataIndex: 'modifiedOn',
+						text: 'Modified On',
 					}],
 				
 					listeners: {
@@ -376,106 +324,112 @@ Ext.define('DocUI.view.doc.DocController', {
 									resizable: false,
 									items: [{
 										xtype: 'textfield',
-										fieldLabel: 'id_doc_details_key',
-										name: 'id_doc_details_key',
-										value: record.data['id_doc_details_key'],
+										fieldLabel: 'Doc Details ID',
+										name: 'docDetailsId',
+										value: record.data['docDetailsId'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'id_doc_details_ver',
-										name: 'id_doc_details_ver',
+										fieldLabel: 'Doc Details Version',
+										name: 'docDetailsVer',
 										value: record.data['id_doc_details_ver'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'part_no',
-										name: 'part_no',
-										value: record.data['part_no'],
+										fieldLabel: 'Part No.',
+										name: 'partNo',
+										value: record.data['partNo'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'item_qty',
-										name: 'item_qty',
-										reference: 'itemqty',
-										value: record.data['item_qty'],
+										fieldLabel: 'Item Quantity',
+										name: 'itemQty',
+										reference: 'itemQty',
+										value: record.data['itemQty'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'reference_no',
-										name: 'reference_no',
-										value: record.data['reference_no'],
+										fieldLabel: 'Reference No.',
+										name: 'referenceNo',
+										value: record.data['referenceNo'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'tx_item_name',
-										name: 'tx_item_name',
-										value: record.data['tx_item_name'],
+										fieldLabel: 'Item Name',
+										name: 'itemName',
+										value: record.data['itemName'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'tx_item_code',
-										name: 'tx_item_code',
-										value: record.data['tx_item_code'],
+										fieldLabel: 'Item Code',
+										name: 'itemCode',
+										value: record.data['itemCode'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'tx_rent',
-										name: 'tx_rent',
-										value: record.data['tx_rent'],
+										fieldLabel: 'Rent',
+										name: 'rent',
+										value: record.data['rent'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'tx_pack',
-										name: 'tx_pack',
-										value: record.data['tx_pack'],
+										fieldLabel: 'Pack',
+										name: 'pack',
+										value: record.data['pack'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'tx_item_description',
+										fieldLabel: 'Item Description',
 										name: 'tx_item_description',
-										value: record.data['tx_item_description'],
+										value: record.data['itemDescription'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'tx_property_address',
-										name: 'tx_property_address',
-										value: record.data['tx_property_address'],
+										fieldLabel: 'Property Address',
+										name: 'propertyAddress',
+										value: record.data['propertyAddress'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'flt_trade',
-										name: 'flt_trade',
-										value: record.data['flt_trade'],
+										fieldLabel: 'Trade',
+										name: 'trade',
+										value: record.data['trade'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'flt_unit_price',
-										name: 'flt_unit_price',
-										value: record.data['flt_unit_price'],
+										fieldLabel: 'Unit Price',
+										name: 'unitPrice',
+										value: record.data['unitPrice'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'flt_total_price',
-										name: 'flt_total_price',
-										value: record.data['flt_total_price'],
+										fieldLabel: 'Total Price',
+										name: 'totalPrice',
+										value: record.data['totalPrice'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'flt_value_of_goods',
-										name: 'flt_value_of_goods',
-										value: record.data['flt_value_of_goods'],
+										fieldLabel: 'Value of Goods',
+										name: 'valueOfGoods',
+										value: record.data['valueOfGoods'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'flt_net_value',
-										name: 'flt_net_value',
-										value: record.data['flt_net_value'],
+										fieldLabel: 'Net Value',
+										name: 'netValue',
+										value: record.data['netValue'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
-										fieldLabel: 'flt_insurance_premium',
-										name: 'flt_insurance_premium',
-										value: record.data['flt_insurance_premium'],
+										fieldLabel: 'Insurance Premium',
+										name: 'insurancePremium',
+										value: record.data['insurancePremium'],
+										labelStyle: 'font-weight:bold'
+									}, {
+										xtype: 'textfield',
+										fieldLabel: 'Modified On',
+										name: 'modifiedOn',
+										value: record.data['modifiedOn'],
 										labelStyle: 'font-weight:bold'
 									}]
 								}],
@@ -494,62 +448,50 @@ Ext.define('DocUI.view.doc.DocController', {
 										text: 'Update',
 										listeners: {
 											click: function () {
-												var docdetailskey = this.up('window').down('textfield[name=id_doc_details_key]').getValue();
-												var docdetailsver = this.up('window').down('textfield[name=id_doc_details_ver]').getValue();
-												var active = record.data['is_active'];
-												var envkey = record.data['id_env_key'];
-												var modkey = record.data['id_user_mod_key'];
-												var dttmod = record.data['dttmod'];
-												var eventkey = record.data['id_event_key'];
-												var statekey = record.data['is_active'];
-												var actionkey = record.data['id_action_key'];
-												var dockey = record.data['id_doc_key'];
-												var part = this.up('window').down('textfield[name=part_no]').getValue();
-												var itemqty = this.up('window').down('textfield[name=item_qty]').getValue();
-												var reference = this.up('window').down('textfield[name=reference_no]').getValue();
-												var txitemname = this.up('window').down('textfield[name=tx_item_name]').getValue();
-												var txitemcode = this.up('window').down('textfield[name=tx_item_code]').getValue();
-												var txrent = this.up('window').down('textfield[name=tx_rent]').getValue();
-												var txpack = this.up('window').down('textfield[name=tx_pack]').getValue();
-												var txitemdesc = this.up('window').down('textfield[name=tx_item_description]').getValue();
-												var txprop = this.up('window').down('textfield[name=tx_property_address]').getValue();
-												var flttrade = this.up('window').down('textfield[name=flt_trade]').getValue();
-												var fltunit = this.up('window').down('textfield[name=flt_unit_price]').getValue();
-												var flttotal = this.up('window').down('textfield[name=flt_total_price]').getValue();
-												var fltnet = this.up('window').down('textfield[name=flt_net_value]').getValue();
-												var fltvalue = this.up('window').down('textfield[name=flt_value_of_goods]').getValue();
-												var fltinsurance = this.up('window').down('textfield[name=flt_insurance_premium]').getValue();
+												var docdetailskey = this.up('window').down('textfield[name=docDetailsId]').getValue();
+												var docdetailsver = this.up('window').down('textfield[name=docDetailsVer]').getValue();
+												var dttmod = record.data['modifiedOn'];
+												var dockey = record.data['docId'];
+												var part = this.up('window').down('textfield[name=partNo]').getValue();
+												var itemqty = this.up('window').down('textfield[name=itemQty]').getValue();
+												var reference = this.up('window').down('textfield[name=referenceNo]').getValue();
+												var txitemname = this.up('window').down('textfield[name=itemName]').getValue();
+												var txitemcode = this.up('window').down('textfield[name=itemCode]').getValue();
+												var txrent = this.up('window').down('textfield[name=rent]').getValue();
+												var txpack = this.up('window').down('textfield[name=pack]').getValue();
+												var txitemdesc = this.up('window').down('textfield[name=itemDescription]').getValue();
+												var txprop = this.up('window').down('textfield[name=propertyAddress]').getValue();
+												var flttrade = this.up('window').down('textfield[name=trade]').getValue();
+												var fltunit = this.up('window').down('textfield[name=unitPrice]').getValue();
+												var flttotal = this.up('window').down('textfield[name=totalPrice]').getValue();
+												var fltnet = this.up('window').down('textfield[name=netValue]').getValue();
+												var fltvalue = this.up('window').down('textfield[name=valueOfGoods]').getValue();
+												var fltinsurance = this.up('window').down('textfield[name=insurancePremium]').getValue();
 												var updatedDocDetails = {
-													id_doc_details_key: docdetailskey
-													,id_doc_details_ver: docdetailsver
-													,is_active: active
-													,id_env_key: envkey
-													,id_user_mod_key: modkey
-													,dtt_mod: dttmod
-													,id_event_key: eventkey
-													,id_state_key: statekey
-													,id_action_key: actionkey
-													,id_doc_key: dockey
-													,part_no: part
-													,item_qty: itemqty
-													,reference_no: reference
-													,tx_item_name: txitemname
-													,tx_item_code: txitemcode
-													,tx_rent: txrent
-													,tx_pack: txpack
-													,tx_item_description: txitemdesc
-													,tx_property_address: txprop
-													,flt_trade: flttrade
-													,flt_unit_price: fltunit
-													,flt_total_price: flttotal
-													,flt_net_value: fltnet
-													,flt_value_of_goods: fltvalue
-													,flt_insurance_premium: fltinsurance
+													docDetailsId: docdetailskey
+													,docDetailsVer: docdetailsver
+													,modifiedOn: dttmod
+													,docId: dockey
+													,partNo: part
+													,itemQty: itemqty
+													,referenceNo: reference
+													,itemName: txitemname
+													,itemCode: txitemcode
+													,rent: txrent
+													,pack: txpack
+													,itemDescription: txitemdesc
+													,propertyAddress: txprop
+													,trade: flttrade
+													,unitPrice: fltunit
+													,totalPrice: flttotal
+													,netValue: fltnet
+													,valueOfGoods: fltvalue
+													,insurancePremium: fltinsurance
 												};
 												docdetails.set(updatedDocDetails);
 												detailsStore.load();
 												Ext.Ajax.request({
-													url: 'details.json',
+													url: '/details',
 													method: 'PUT',
 													jsonData: Ext.util.JSON.encode(updatedDocDetails),
 													headers:
@@ -591,88 +533,99 @@ Ext.define('DocUI.view.doc.DocController', {
 						text: 'Update',
 						listeners: {
 							click: function () {
-								var active = this.up('window').down('textfield[name=is_active]').getValue();
-								var envkey = this.up('window').down('textfield[name=id_env_key]').getValue();
-								var modkey = this.up('window').down('textfield[name=id_user_mod_key]').getValue();
-								var dttmod = this.up('window').down('textfield[name=dtt_mod]').getValue();
-								var eventkey = this.up('window').down('textfield[name=id_event_key]').getValue();
-								var statekey = this.up('window').down('textfield[name=id_state_key]').getValue();
-								var actionkey = this.up('window').down('textfield[name=id_action_key]').getValue();
-								var dockey = this.up('window').down('textfield[name=id_doc_key]').getValue();
-								var docver = this.up('window').down('textfield[name=id_doc_ver]').getValue();
-								var supplier = this.up('window').down('textfield[name=supplier_number]').getValue();
-								var delivery_note_no = this.up('window').down('textfield[name=delivery_note_no]').getValue();
-								var receipt_number = this.up('window').down('textfield[name=receipt_number]').getValue();
-								var document_number = this.up('window').down('textfield[name=document_number]').getValue();
-								var dt_document = this.up('window').down('textfield[name=dt_document]').getValue();
-								var recipient_of_invoice = this.up('window').down('textfield[name=recipient_of_invoice]').getValue();
-								var vat_number = this.up('window').down('textfield[name=vat_number]').getValue();
-								var dt_despatch = this.up('window').down('textfield[name=dt_despatch]').getValue();
-								var tx_invoice_number = this.up('window').down('textfield[name=tx_invoice_number]').getValue();
-								var tx_currency = this.up('window').down('textfield[name=tx_currency]').getValue();
-								var tx_account_number = this.up('window').down('textfield[name=tx_account_number]').getValue();
-								var tx_voucher_number = this.up('window').down('textfield[name=tx_voucher_number]').getValue();
-								var tx_fax_number = this.up('window').down('textfield[name=tx_fax_number]').getValue();
-								var tx_association_number = this.up('window').down('textfield[name=tx_association_number]').getValue();
-								var tx_company_address = this.up('window').down('textfield[name=tx_company_address]').getValue();
-								var tx_invoice_to = this.up('window').down('textfield[name=tx_invoice_to]').getValue();
-								var tx_deliver_to = this.up('window').down('textfield[name=tx_deliver_to]').getValue();
-								var tx_order_id = this.up('window').down('textfield[name=tx_order_id]').getValue();
-								var tx_delivery_note = this.up('window').down('textfield[name=tx_delivery_note]').getValue();
-								var tx_delivery_details = this.up('window').down('textfield[name=tx_delivery_details]').getValue();
-								var tx_payment_details = this.up('window').down('textfield[name=tx_payment_details]').getValue();
-								var flt_vat = this.up('window').down('textfield[name=flt_vat]').getValue();
-								var flt_vat_rate = this.up('window').down('textfield[name=flt_vat_rate]').getValue();
-								var flt_vat_payable = this.up('window').down('textfield[name=flt_vat_payable]').getValue();
-								var flt_invoice_amount = this.up('window').down('textfield[name=flt_invoice_amount]').getValue();
-								var flt_total_before_vat = this.up('window').down('textfield[name=flt_total_before_vat]').getValue();
-								var flt_total_amount_due = this.up('window').down('textfield[name=flt_total_amount_due]').getValue();
-								var flt_discount = this.up('window').down('textfield[name=flt_discount]').getValue();
-								var flt_net_invoice_total = this.up('window').down('textfield[name=flt_net_invoice_total]').getValue();
+								var dttmod = this.up('window').down('textfield[name=modifiedOn]').getValue();
+								var dockey = this.up('window').down('textfield[name=docId]').getValue();
+								var docver = this.up('window').down('textfield[name=docVer]').getValue();
+								var supplier = this.up('window').down('textfield[name=supplierNumber]').getValue();
+								var delivery_note_no = this.up('window').down('textfield[name=deliveryNoteNo]').getValue();
+								var receipt_number = this.up('window').down('textfield[name=receiptNo]').getValue();
+								var document_number = this.up('window').down('textfield[name=documentNumber]').getValue();
+								var dt_document = this.up('window').down('textfield[name=documentDate]').getValue();
+								var recipient_of_invoice = this.up('window').down('textfield[name=recipientOfInvoice]').getValue();
+								var vat_number = this.up('window').down('textfield[name=vatNumber]').getValue();
+								var dt_despatch = this.up('window').down('textfield[name=despatchDate]').getValue();
+								var tx_invoice_number = this.up('window').down('textfield[name=invoiceNumber]').getValue();
+								var tx_currency = this.up('window').down('textfield[name=currency]').getValue();
+								var tx_account_number = this.up('window').down('textfield[name=accountNumber]').getValue();
+								var tx_voucher_number = this.up('window').down('textfield[name=voucherNumber]').getValue();
+								var tx_fax_number = this.up('window').down('textfield[name=faxNumber]').getValue();
+								var tx_association_number = this.up('window').down('textfield[name=associationNumber]').getValue();
+								var tx_company_address = this.up('window').down('textfield[name=companyAddress]').getValue();
+								var tx_invoice_to = this.up('window').down('textfield[name=invoiceTo]').getValue();
+								var tx_deliver_to = this.up('window').down('textfield[name=deliverTo]').getValue();
+								var tx_order_id = this.up('window').down('textfield[name=orderId]').getValue();
+								var tx_delivery_note = this.up('window').down('textfield[name=deliveryNote]').getValue();
+								var tx_delivery_details = this.up('window').down('textfield[name=deliveryDetails]').getValue();
+								var tx_payment_details = this.up('window').down('textfield[name=paymentDetails]').getValue();
+								var flt_vat = this.up('window').down('textfield[name=vat]').getValue();
+								var flt_vat_rate = this.up('window').down('textfield[name=vatRate]').getValue();
+								var flt_vat_payable = this.up('window').down('textfield[name=vatPayable]').getValue();
+								var flt_invoice_amount = this.up('window').down('textfield[name=invoiceAmount]').getValue();
+								var flt_total_before_vat = this.up('window').down('textfield[name=totalBeforeVat]').getValue();
+								var flt_total_amount_due = this.up('window').down('textfield[name=totalAmountDue]').getValue();
+								var flt_discount = this.up('window').down('textfield[name=discount]').getValue();
+								var flt_net_invoice_total = this.up('window').down('textfield[name=netInvoiceTotal]').getValue();
 								var updatedDoc = {
-									id_doc_key: dockey
-									,id_doc_ver: docver
-									,is_active: active
-									,id_env_key: envkey
-									,id_user_mod_key: modkey
-									,dtt_mod: dttmod
-									,id_event_key: eventkey
-									,id_state_key: statekey
-									,id_action_key: actionkey
-									,supplier_number: supplier
-									,delivery_note_no: delivery_note_no
-									,receipt_number: receipt_number
-									,document_number: document_number
-									,dt_document: dt_document
-									,recipient_of_invoice: recipient_of_invoice
-									,vat_number: vat_number
-									,dt_despatch: dt_despatch
-									,tx_invoice_number: tx_invoice_number
-									,tx_currency: tx_currency
-									,tx_account_number: tx_account_number
-									,tx_voucher_number: tx_voucher_number
-									,tx_fax_number: tx_fax_number
-									,tx_association_number: tx_association_number
-									,tx_company_address: tx_company_address
-									,tx_invoice_to: tx_invoice_to
-									,tx_deliver_to: tx_deliver_to
-									,tx_order_id: tx_order_id
-									,tx_delivery_note: tx_delivery_note
-									,tx_delivery_details: tx_delivery_details
-									,tx_payment_details: tx_payment_details
-									,flt_vat: flt_vat
-									,flt_vat_rate: flt_vat_rate
-									,flt_vat_payable: flt_vat_payable
-									,flt_invoice_amount: flt_invoice_amount
-									,flt_total_before_vat: flt_total_before_vat
-									,flt_total_amount_due: flt_total_amount_due
-									,flt_discount: flt_discount
-									,flt_net_invoice_total: flt_net_invoice_total
+									docId: dockey
+									,docVer: docver
+									,modifiedOn: dttmod
+									,supplierNumber: supplier
+									,deliveryNoteNo: delivery_note_no
+									,receiptNo: receipt_number
+									,documentNumber: document_number
+									,documentDate: dt_document
+									,recipientOfInvoice: recipient_of_invoice
+									,vatNumber: vat_number
+									,despatchDate: dt_despatch
+									,invoiceNumber: tx_invoice_number
+									,currency: tx_currency
+									,accountNumber: tx_account_number
+									,voucherNumber: tx_voucher_number
+									,faxNumber: tx_fax_number
+									,associationNumber: tx_association_number
+									,companyAddress: tx_company_address
+									,invoiceTo: tx_invoice_to
+									,deliverTo: tx_deliver_to
+									,orderId: tx_order_id
+									,deliveryNote: tx_delivery_note
+									,deliveryDetails: tx_delivery_details
+									,paymentDetails: tx_payment_details
+									,vat: flt_vat
+									,vatRate: flt_vat_rate
+									,vatPayable: flt_vat_payable
+									,invoiceAmount: flt_invoice_amount
+									,totalBeforeVat: flt_total_before_vat
+									,totalAmountDue: flt_total_amount_due
+									,discount: flt_discount
+									,netInvoiceTotal: flt_net_invoice_total
+									,docDetailsId: docdetailskey
+									,docDetailsVer: docdetailsver
+									,partNo: part
+									,itemQty: itemqty
+									,referenceNo: reference
+									,itemName: txitemname
+									,itemCode: txitemcode
+									,rent: txrent
+									,pack: txpack
+									,itemDescription: txitemdesc
+									,propertyAddress: txprop
+									,trade: flttrade
+									,unitPrice: fltunit
+									,netValue: fltnet
+									,totalPrice: flttotal
+									,valueOfGoods: fltvalue
+									,insurancePremium: fltinsurance
+									,customerId: record.data['customerId']
+									,customerVer: record.data['customerVer']
+									,customerNumber: record.data['customerNumber']
+									,contactNumber: record.data['contactNumber']
+									,customerOrderNo: record.data['customerOrderNo']
+									,customerAddress: record.data['customerAddress']
 								};
 								doc.set(updatedDoc);
 								docStore.load();
 								Ext.Ajax.request({
-									url: 'docs.json',
+									url: '/docs',
 									method: 'PUT',
 									jsonData: Ext.util.JSON.encode(updatedDoc),
 									headers:

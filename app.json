@@ -525,8 +525,8 @@
         },
 
         "modern": {
-            "toolkit": "modern",
-            "theme": "theme-material",
+            "toolkit": "classic",
+            "theme": "theme-triton",
             "sass": {
                 "generated": {
                     "var": "modern/sass/save.scss",

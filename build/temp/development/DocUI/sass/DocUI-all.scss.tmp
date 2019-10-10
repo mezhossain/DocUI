@@ -11,8 +11,6 @@ $include-docui-view-doc-docdetails: dynamic(true);;
 $include-docui-view-doc-docform: dynamic(true);;
 $include-docui-view-doc-docviewmodel: dynamic(true);;
 $include-docui-view-doc-docwindow: dynamic(true);;
-$include-docui-view-doc_details-docdetailscontroller: dynamic(true);;
-$include-docui-view-doc_details-docdetailsviewmodel: dynamic(true);;
 $include-docui-view-main-main: dynamic(true);;
 $include-docui-view-main-maincontroller: dynamic(true);;
 $include-docui-view-main-mainmodel: dynamic(true);;
