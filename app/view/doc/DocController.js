@@ -280,7 +280,7 @@ Ext.define('DocUI.view.doc.DocController', {
 						dataIndex: 'rent',
 						text: 'Rent',
 					}, {
-						dataIndex: 'tpack',
+						dataIndex: 'pack',
 						text: 'Pack',
 					}, {
 						dataIndex: 'itemDescription',
@@ -332,7 +332,7 @@ Ext.define('DocUI.view.doc.DocController', {
 										xtype: 'textfield',
 										fieldLabel: 'Doc Details Version',
 										name: 'docDetailsVer',
-										value: record.data['id_doc_details_ver'],
+										value: record.data['docDetailsVer'],
 										labelStyle: 'font-weight:bold'
 									},	{
 										xtype: 'textfield',
