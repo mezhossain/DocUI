@@ -4,21 +4,36 @@ Ext.define('DocUI.view.doc.DocController', {
 	alias: 'controller.docs',
 
 	onDoubleClick: function (dataview, record, item, index, e) {
-		var docKey = record.data['docId'];
-		console.log(docKey);
+		var me = this;
+		var docdetailskey, docdetailsver, part, itemqty, reference, txitemname,txitemcode, txrent, txpack, txitemdesc, txprop, flttrade, fltunit, fltnet, flttotal, fltvalue, fltinsurance, updatedDoc, updatedDocDetails;
+
+		var grid = Ext.getCmp('docgrid');
+
 		var docStore = Ext.data.StoreManager.lookup('docs');
+		var docCount = docStore.getCount();
+		var docKey = record.data['docId'];
 		var doc = docStore.findRecord('docId',docKey);
+		
 		var detailsStore = Ext.data.StoreManager.lookup('details');
-		var docdetails = detailsStore.findRecord('docId',docKey);
+		var docDetailsKeyNext = detailsStore.last().data.docDetailsId+1;
+		var detailsCount = detailsStore.getCount();
 		var docdetailsgroup = detailsStore.queryRecords('docId',docKey);
-		console.log(docdetailsgroup);
 		var dets = [];
 		var currentstore = Ext.data.StoreManager.lookup('currentdetails');
+		var currentCount = currentstore.getCount();
 		for (var i = 0; i < docdetailsgroup.length; i++){
 			dets.push(docdetailsgroup[i].data);
 		}
 		currentstore.loadData(dets);
-		console.log(dets);
+
+		var today = new Date();
+		var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+		var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+		var dt = date+' '+time;
+		var dateTime = Date.parse(dt);
+
+		var detailsarray = [];
+
 		var updateForm = Ext.create('Ext.Window', {
 			extend: 'Ext.window.Window',
 			title: 'Update Doc',
@@ -42,8 +57,6 @@ Ext.define('DocUI.view.doc.DocController', {
 					},
 					bodyPadding: '20',
 					scrollable: true,
-					// height: 537,
-					//width: 450,
 					width: 1190,
 					height: 350,
 					items: [{
@@ -247,6 +260,7 @@ Ext.define('DocUI.view.doc.DocController', {
 					layout: 'fit',
 					width: 1190,
 					height: 185,
+					id: 'docdetailsgrid',
 					controller: 'docs',
 					viewModel: { type: 'docs' },
 					store: currentstore,
@@ -310,7 +324,7 @@ Ext.define('DocUI.view.doc.DocController', {
 				
 					listeners: {
 						itemdblclick: function (dataview, record, item, index, e) {
-							var updateDocForm = Ext.create('Ext.Window', {
+							var updateDocDetailsForm = Ext.create('Ext.Window', {
 								extend: 'Ext.window.Window',
 								title: 'Update Doc Details',
 								iconCls: 'x-fa fa-edit',
@@ -380,7 +394,7 @@ Ext.define('DocUI.view.doc.DocController', {
 									},	{
 										xtype: 'textfield',
 										fieldLabel: 'Item Description',
-										name: 'tx_item_description',
+										name: 'itemDescription',
 										value: record.data['itemDescription'],
 										labelStyle: 'font-weight:bold'
 									},	{
@@ -441,7 +455,7 @@ Ext.define('DocUI.view.doc.DocController', {
 										xtype: 'button',
 										text: 'Cancel',
 										handler: function () {
-											updateDocForm.close();
+											updateDocDetailsForm.close();
 										}
 									}, '->', {
 										xtype: 'button',
@@ -488,27 +502,15 @@ Ext.define('DocUI.view.doc.DocController', {
 													,valueOfGoods: fltvalue
 													,insurancePremium: fltinsurance
 												};
+												var docdetails = detailsStore.findRecord('docDetailsId',docdetailskey);
+												var currentdocdetails = currentstore.findRecord('docDetailsId',docdetailskey);
+												console.log(currentdocdetails);
 												docdetails.set(updatedDocDetails);
+												currentdocdetails.set(updatedDocDetails);
 												detailsStore.load();
-												Ext.Ajax.request({
-													url: '/details',
-													method: 'PUT',
-													jsonData: Ext.util.JSON.encode(updatedDocDetails),
-													headers:
-													{
-														'Content-Type': 'application/json'
-													},
-													success: function (response) {
-														var obj = Ext.decode(response.responseText);
-														Ext.Msg.alert('Success', "Document details were successfully updated to the database");
-														console.log(obj);
-													},
-													failure: function () {
-														console.log("Failed");
-														Ext.Msg.alert('Error', "Document details were not updated to the database");
-													}
-												});
-												updateDocForm.close();
+												var detailsGrid = Ext.getCmp('docdetailsgrid');
+												detailsGrid.reconfigure(currentstore);
+												updateDocDetailsForm.close();
 											}
 										}
 									}]
@@ -527,13 +529,208 @@ Ext.define('DocUI.view.doc.DocController', {
 						handler: function () {
 							updateForm.close();
 						}
-					}, '->', 
-					{
+					}
+					// ,'->',{
+					// 	xtype: 'button',
+					// 	text: 'Add Details',
+					// 	listeners: {
+					// 		click: function() {
+					// 			var addDocDetailsForm = Ext.create('Ext.Window', {
+					// 				extend: 'Ext.window.Window',
+					// 				title: 'Add Doc Details',
+					// 				iconCls: 'x-fa fa-plus',
+					// 				modal: true,
+					// 				items: [{
+					// 					xtype: 'form',
+					// 					layout: 'form',
+					// 					scrollable: true,
+					// 					height: 537,
+					// 					width: 450,
+					// 					resizable: false,
+					// 					items: [{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Doc Details ID',
+					// 						name: 'docDetailsId',
+					// 						value: docDetailsKeyNext,
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Doc Details Version',
+					// 						value: 0,
+					// 						name: 'docDetailsVer',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Part No.',
+					// 						name: 'partNo',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Item Quantity',
+					// 						name: 'itemQty',
+					// 						reference: 'itemQty',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Reference No.',
+					// 						name: 'referenceNo',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Item Name',
+					// 						name: 'itemName',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Item Code',
+					// 						name: 'itemCode',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Rent',
+					// 						name: 'rent',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Pack',
+					// 						name: 'pack',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textarea',
+					// 						fieldLabel: 'Item Description',
+					// 						name: 'itemDescription',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textarea',
+					// 						fieldLabel: 'Property Address',
+					// 						name: 'propertyAddress',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Trade',
+					// 						name: 'trade',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Unit Price',
+					// 						name: 'unitPrice',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Total Price',
+					// 						name: 'totalPrice',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Value of Goods',
+					// 						name: 'valueOfGoods',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Net Value',
+					// 						name: 'netValue',
+					// 						labelStyle: 'font-weight:bold'
+					// 					},	{
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Insurance Premium',
+					// 						name: 'insurancePremium',
+					// 						labelStyle: 'font-weight:bold'
+					// 					}, {
+					// 						xtype: 'textfield',
+					// 						fieldLabel: 'Modified On',
+					// 						name: 'modifiedOn',
+					// 						value: dt,
+					// 						labelStyle: 'font-weight:bold'
+					// 					}]
+					// 				}],
+					// 				dockedItems: [{
+					// 					xtype: 'toolbar',
+					// 					dock: 'bottom',
+					// 					ui: 'footer',
+					// 					items: [{
+					// 						xtype: 'button',
+					// 						text: 'Cancel',
+					// 						handler: function () {
+					// 							addDocDetailsForm.close();
+					// 						}
+					// 					}, '->', {
+					// 						xtype: 'button',
+					// 						text: 'Add',
+					// 						listeners: {
+					// 							click: function () {
+					// 								docdetailskey = docDetailsKeyNext;
+					// 								docdetailsver = 0;
+					// 								var dttmod = dateTime;
+					// 								var dockey = docKey;
+					// 								part = this.up('window').down('textfield[name=partNo]').getValue();
+					// 								itemqty = this.up('window').down('textfield[name=itemQty]').getValue();
+					// 								reference = this.up('window').down('textfield[name=referenceNo]').getValue();
+					// 								txitemname = this.up('window').down('textfield[name=itemName]').getValue();
+					// 								txitemcode = this.up('window').down('textfield[name=itemCode]').getValue();
+					// 								txrent = this.up('window').down('textfield[name=rent]').getValue();
+					// 								txpack = this.up('window').down('textfield[name=pack]').getValue();
+					// 								txitemdesc = this.up('window').down('textfield[name=itemDescription]').getValue();
+					// 								txprop = this.up('window').down('textfield[name=propertyAddress]').getValue();
+					// 								flttrade = this.up('window').down('textfield[name=trade]').getValue();
+					// 								fltunit = this.up('window').down('textfield[name=unitPrice]').getValue();
+					// 								flttotal = this.up('window').down('textfield[name=totalPrice]').getValue();
+					// 								fltnet = this.up('window').down('textfield[name=netValue]').getValue();
+					// 								fltvalue = this.up('window').down('textfield[name=valueOfGoods]').getValue();
+					// 								fltinsurance = this.up('window').down('textfield[name=insurancePremium]').getValue();
+					// 								addDocDetails = {
+					// 									docDetailsId: docdetailskey
+					// 									,docDetailsVer: docdetailsver
+					// 									,modifiedOn: dttmod
+					// 									,docId: dockey
+					// 									,partNo: part
+					// 									,itemQty: itemqty
+					// 									,referenceNo: reference
+					// 									,itemName: txitemname
+					// 									,itemCode: txitemcode
+					// 									,rent: txrent
+					// 									,pack: txpack
+					// 									,itemDescription: txitemdesc
+					// 									,propertyAddress: txprop
+					// 									,trade: flttrade
+					// 									,unitPrice: fltunit
+					// 									,totalPrice: flttotal
+					// 									,netValue: fltnet
+					// 									,valueOfGoods: fltvalue
+					// 									,insurancePremium: fltinsurance
+					// 								};
+					// 								detailsStore.insert(detailsCount+1,addDocDetails);
+					// 								currentstore.insert(currentCount+1,addDocDetails);
+					// 								detailsStore.load();
+					// 								Ext.Ajax.request({
+					// 									url: 'http://localhost:8080/docDetailsInsert',
+					// 									method: 'POST',
+					// 									jsonData: Ext.util.JSON.encode(addDocDetails),
+					// 									cors: true,
+					// 									success: function (response) {
+					// 										var obj = response.responseText;
+					// 										Ext.Msg.alert('Success', "Document details were successfully added to the database");
+					// 									},
+					// 									failure: function () {
+					// 										Ext.Msg.alert('Error', "Document details were not added to the database");
+					// 									}
+					// 								});
+					// 								var grid = Ext.getCmp('docdetailsgrid');
+					// 								grid.reconfigure(currentstore)
+					// 								addDocDetailsForm.close();
+					// 							}
+					// 						}
+					// 					}]
+					// 				}]
+					// 			}).show();
+					// 		}
+					// 	}	
+					// }
+					, '->', {
 						xtype: 'button',
 						text: 'Update',
 						listeners: {
 							click: function () {
-								var dttmod = this.up('window').down('textfield[name=modifiedOn]').getValue();
+								var dttmod = dateTime;
 								var dockey = this.up('window').down('textfield[name=docId]').getValue();
 								var docver = this.up('window').down('textfield[name=docVer]').getValue();
 								var supplier = this.up('window').down('textfield[name=supplierNumber]').getValue();
@@ -565,7 +762,7 @@ Ext.define('DocUI.view.doc.DocController', {
 								var flt_total_amount_due = this.up('window').down('textfield[name=totalAmountDue]').getValue();
 								var flt_discount = this.up('window').down('textfield[name=discount]').getValue();
 								var flt_net_invoice_total = this.up('window').down('textfield[name=netInvoiceTotal]').getValue();
-								var updatedDoc = {
+								updatedDoc = {
 									docId: dockey
 									,docVer: docver
 									,modifiedOn: dttmod
@@ -624,28 +821,477 @@ Ext.define('DocUI.view.doc.DocController', {
 								};
 								doc.set(updatedDoc);
 								docStore.load();
+								var detailsrange = currentstore.getRange();
+								Ext.each(detailsrange, function(item) {
+									detailsarray.push(item.data); // push this to the array
+								}, this);
 								Ext.Ajax.request({
-									url: '/docs',
+									url: 'http://10.33.56.125:8080/docUpdate',
 									method: 'PUT',
+									cors: true,
 									jsonData: Ext.util.JSON.encode(updatedDoc),
-									headers:
-									{
-										'Content-Type': 'application/json'
-									},
 									success: function (response) {
-										var obj = Ext.decode(response.responseText);
-										Ext.Msg.alert('Success', "Document was successfully updated to the database");
-										console.log(obj);
+										Ext.Msg.alert('Success', "DATA Updated");
 									},
 									failure: function () {
 										Ext.Msg.alert('Error', "Document was not updated to the database");
-										console.log("Failed");
 									}
 								});
+								for (var i = 0; i < detailsarray.length; i++) {
+									Ext.Ajax.request({
+										url: 'http://10.33.56.125:8080/docDetailsUpdate',
+										method: 'PUT',
+										jsonData: Ext.encode(detailsarray[i]),
+										headers:
+										{
+											'Content-Type': 'application/json'
+										},
+										cors: true,
+										success: function (response) {
+											Ext.Msg.alert('Success', "Document details were successfully updated to the database");
+										},
+										failure: function () {
+											console.log("Failed");
+											Ext.Msg.alert('Error', "Document details were not updated to the database");
+										}
+									});
+								}
+								grid.reconfigure(docStore);
 								updateForm.close();
 							}
 						}
 					}]
+				}]
+			}]
+		}).show();
+	},
+
+	newDoc() {
+		var me = this;
+		var addDoc, addDocDetails;
+		var grid = Ext.getCmp('docgrid');
+		var docStore = Ext.data.StoreManager.lookup('docs');
+		var detailsStore = Ext.data.StoreManager.lookup('details');
+		var currentstore = Ext.data.StoreManager.lookup('currentdetails');
+		var docKeyNext = docStore.last().data.docId+1;
+		var docDetailsKeyNext = detailsStore.last().data.docDetailsId+1;
+
+		var today = new Date();
+		var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+		var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+		var dt = date+' '+time;
+		var dateTime = Date.parse(dt);
+
+		var win = Ext.create('Ext.Window', {
+			extend: 'Ext.window.Window',
+			title: 'Add Doc',
+			iconCls: 'x-fa fa-plus',
+			modal: true,
+			width: 1200,
+			height: 625,
+			items: [{
+				xtype: 'docform',
+				beforeRender: function() {
+					this.lookupReference('docId').setValue(docKeyNext);
+					this.lookupReference('docVer').setValue(0);
+					this.lookupReference('modifiedOn').setValue(dt);
+				}
+			}, {
+				xtype: 'grid',
+				layout: 'fit',
+				width: 1190,
+				height: 235,
+				id: 'adddocdetailsgrid',
+				controller: 'docs',
+				viewModel: { type: 'docs' },
+				store: currentstore,
+				bind: {  selection: '{selectedDetails}' },
+				scrollable: true,
+				columns: [{
+					dataIndex: 'docDetailsId',
+					text: 'Doc Details ID',
+				}, {
+					dataIndex: 'docDetailsVer',
+					text: 'Doc Details Version', 
+				}, {
+					dataIndex: 'docId',
+					text: 'Doc ID', 
+				}, {
+					dataIndex: 'partNo',
+					text: 'Part No',
+				}, {
+					dataIndex: 'itemQty',
+					text: 'Item Quantity',
+				}, {
+					dataIndex: 'referenceNo',
+					text: 'Reference No.'
+				}, {
+					dataIndex: 'itemName',
+					text: 'Item Name',
+				}, {
+					dataIndex: 'itemCode',
+					text: 'Item Code',
+				}, {
+					dataIndex: 'rent',
+					text: 'Rent',
+				}, {
+					dataIndex: 'pack',
+					text: 'Pack',
+				}, {
+					dataIndex: 'itemDescription',
+					text: 'Item Description',
+				}, {
+					dataIndex: 'propertyAddress',
+					text: 'Property Address', 
+				}, {
+					dataIndex: 'trade',
+					text: 'Trade',
+				}, {
+					dataIndex: 'unitPrice',
+					text: 'Unit Price',
+				}, {
+					dataIndex: 'netValue',
+					text: 'Net Value', 
+				}, {
+					dataIndex: 'valueOfGoods',
+					text: 'Value of Goods',
+				}, {
+					dataIndex: 'insurancePremium',
+					text: 'Insurance Premium',
+				}, {
+					dataIndex: 'modifiedOn',
+					text: 'Modified On',
+				}],
+			}],
+			dockedItems: [{
+				xtype: 'toolbar',
+				dock: 'bottom',
+				ui: 'footer',
+				items:[{
+					xtype: 'button',
+					text: 'Cancel',
+					handler: function(){
+						win.close();
+					}
+				}
+				,'->',{
+					xtype: 'button',
+					text: 'Add Details',
+					listeners: {
+						click: function() {
+							var addDocDetailsForm = Ext.create('Ext.Window', {
+								extend: 'Ext.window.Window',
+								title: 'Add Doc Details',
+								iconCls: 'x-fa fa-plus',
+								modal: true,
+								items: [{
+									xtype: 'form',
+									layout: 'form',
+									scrollable: true,
+									height: 537,
+									width: 450,
+									resizable: false,
+									items: [{
+										xtype: 'textfield',
+										fieldLabel: 'Doc Details ID',
+										name: 'docDetailsId',
+										value: docDetailsKeyNext,
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Doc Details Version',
+										value: 0,
+										name: 'docDetailsVer',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Part No.',
+										name: 'partNo',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Item Quantity',
+										name: 'itemQty',
+										reference: 'itemQty',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Reference No.',
+										name: 'referenceNo',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Item Name',
+										name: 'itemName',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Item Code',
+										name: 'itemCode',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Rent',
+										name: 'rent',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Pack',
+										name: 'pack',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textarea',
+										fieldLabel: 'Item Description',
+										name: 'itemDescription',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textarea',
+										fieldLabel: 'Property Address',
+										name: 'propertyAddress',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Trade',
+										name: 'trade',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Unit Price',
+										name: 'unitPrice',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Total Price',
+										name: 'totalPrice',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Value of Goods',
+										name: 'valueOfGoods',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Net Value',
+										name: 'netValue',
+										labelStyle: 'font-weight:bold'
+									},	{
+										xtype: 'textfield',
+										fieldLabel: 'Insurance Premium',
+										name: 'insurancePremium',
+										labelStyle: 'font-weight:bold'
+									}, {
+										xtype: 'textfield',
+										fieldLabel: 'Modified On',
+										name: 'modifiedOn',
+										value: dt,
+										labelStyle: 'font-weight:bold'
+									}]
+								}],
+								dockedItems: [{
+									xtype: 'toolbar',
+									dock: 'bottom',
+									ui: 'footer',
+									items: [{
+										xtype: 'button',
+										text: 'Cancel',
+										handler: function () {
+											addDocDetailsForm.close();
+										}
+									}, '->', {
+										xtype: 'button',
+										text: 'Add',
+										listeners: {
+											click: function () {
+												docdetailskey = docDetailsKeyNext;
+												docdetailsver = this.up('window').down('textfield[name=docDetailsVer]').getValue();
+												var dttmod = dateTime;
+												var dockey = docKeyNext;
+												part = this.up('window').down('textfield[name=partNo]').getValue();
+												itemqty = this.up('window').down('textfield[name=itemQty]').getValue();
+												reference = this.up('window').down('textfield[name=referenceNo]').getValue();
+												txitemname = this.up('window').down('textfield[name=itemName]').getValue();
+												txitemcode = this.up('window').down('textfield[name=itemCode]').getValue();
+												txrent = this.up('window').down('textfield[name=rent]').getValue();
+												txpack = this.up('window').down('textfield[name=pack]').getValue();
+												txitemdesc = this.up('window').down('textfield[name=itemDescription]').getValue();
+												txprop = this.up('window').down('textfield[name=propertyAddress]').getValue();
+												flttrade = this.up('window').down('textfield[name=trade]').getValue();
+												fltunit = this.up('window').down('textfield[name=unitPrice]').getValue();
+												flttotal = this.up('window').down('textfield[name=totalPrice]').getValue();
+												fltnet = this.up('window').down('textfield[name=netValue]').getValue();
+												fltvalue = this.up('window').down('textfield[name=valueOfGoods]').getValue();
+												fltinsurance = this.up('window').down('textfield[name=insurancePremium]').getValue();
+												addDocDetails = {
+													docDetailsId: docdetailskey
+													,docDetailsVer: docdetailsver
+													,modifiedOn: dttmod
+													,docId: dockey
+													,partNo: part
+													,itemQty: itemqty
+													,referenceNo: reference
+													,itemName: txitemname
+													,itemCode: txitemcode
+													,rent: txrent
+													,pack: txpack
+													,itemDescription: txitemdesc
+													,propertyAddress: txprop
+													,trade: flttrade
+													,unitPrice: fltunit
+													,totalPrice: flttotal
+													,netValue: fltnet
+													,valueOfGoods: fltvalue
+													,insurancePremium: fltinsurance
+												};
+												detailsStore.insert(1,addDocDetails);
+												currentstore.insert(1,addDocDetails);
+												detailsStore.load();
+												var grid = Ext.getCmp('adddocdetailsgrid');
+												grid.reconfigure(currentstore)
+												addDocDetailsForm.close();
+											}
+										}
+									}]
+								}]
+							}).show();
+						}
+					}	
+				}
+				,'->',{
+					xtype: 'button',
+					text: 'Save',
+					listeners: {
+						click: function() {
+							var dttmod = dateTime;
+							var dockey = docKeyNext;
+							var docver = this.up('window').down('textfield[name=docVer]').getValue();
+							var supplier = this.up('window').down('textfield[name=supplierNumber]').getValue();
+							var delivery_note_no = this.up('window').down('textfield[name=deliveryNoteNo]').getValue();
+							var receipt_number = this.up('window').down('textfield[name=receiptNo]').getValue();
+							var document_number = this.up('window').down('textfield[name=documentNumber]').getValue();
+							var dt_document = Date.parse(this.up('window').down('textfield[name=documentDate]').getValue());
+							var recipient_of_invoice = this.up('window').down('textfield[name=recipientOfInvoice]').getValue();
+							var vat_number = this.up('window').down('textfield[name=vatNumber]').getValue();
+							var dt_despatch = Date.parse(this.up('window').down('textfield[name=despatchDate]').getValue());
+							var tx_invoice_number = this.up('window').down('textfield[name=invoiceNumber]').getValue();
+							var tx_currency = this.up('window').down('textfield[name=currency]').getValue();
+							var tx_account_number = this.up('window').down('textfield[name=accountNumber]').getValue();
+							var tx_voucher_number = this.up('window').down('textfield[name=voucherNumber]').getValue();
+							var tx_fax_number = this.up('window').down('textfield[name=faxNumber]').getValue();
+							var tx_association_number = this.up('window').down('textfield[name=associationNumber]').getValue();
+							var tx_company_address = this.up('window').down('textfield[name=companyAddress]').getValue();
+							var tx_invoice_to = this.up('window').down('textfield[name=invoiceTo]').getValue();
+							var tx_deliver_to = this.up('window').down('textfield[name=deliverTo]').getValue();
+							var tx_order_id = this.up('window').down('textfield[name=orderId]').getValue();
+							var tx_delivery_note = this.up('window').down('textfield[name=deliveryNote]').getValue();
+							var tx_delivery_details = this.up('window').down('textfield[name=deliveryDetails]').getValue();
+							var tx_payment_details = this.up('window').down('textfield[name=paymentDetails]').getValue();
+							var flt_vat = this.up('window').down('textfield[name=vat]').getValue();
+							var flt_vat_rate = this.up('window').down('textfield[name=vatRate]').getValue();
+							var flt_vat_payable = this.up('window').down('textfield[name=vatPayable]').getValue();
+							var flt_invoice_amount = this.up('window').down('textfield[name=invoiceAmount]').getValue();
+							var flt_total_before_vat = this.up('window').down('textfield[name=totalBeforeVat]').getValue();
+							var flt_total_amount_due = this.up('window').down('textfield[name=totalAmountDue]').getValue();
+							var flt_discount = this.up('window').down('textfield[name=discount]').getValue();
+							var flt_net_invoice_total = this.up('window').down('textfield[name=netInvoiceTotal]').getValue();
+							addDoc = {
+								docId: dockey
+								,docVer: docver
+								,modifiedOn: dttmod
+								,supplierNumber: supplier
+								,deliveryNoteNo: delivery_note_no
+								,receiptNo: receipt_number
+								,documentNumber: document_number
+								,documentDate: dt_document
+								,recipientOfInvoice: recipient_of_invoice
+								,vatNumber: vat_number
+								,despatchDate: dt_despatch
+								,invoiceNumber: tx_invoice_number
+								,currency: tx_currency
+								,accountNumber: tx_account_number
+								,voucherNumber: tx_voucher_number
+								,faxNumber: tx_fax_number
+								,associationNumber: tx_association_number
+								,companyAddress: tx_company_address
+								,invoiceTo: tx_invoice_to
+								,deliverTo: tx_deliver_to
+								,orderId: tx_order_id
+								,deliveryNote: tx_delivery_note
+								,deliveryDetails: tx_delivery_details
+								,paymentDetails: tx_payment_details
+								,vat: flt_vat
+								,vatRate: flt_vat_rate
+								,vatPayable: flt_vat_payable
+								,invoiceAmount: flt_invoice_amount
+								,totalBeforeVat: flt_total_before_vat
+								,totalAmountDue: flt_total_amount_due
+								,discount: flt_discount
+								,netInvoiceTotal: flt_net_invoice_total
+								,docDetailsId: null
+								,docDetailsVer: null
+								,partNo: null
+								,itemQty: null
+								,referenceNo: null
+								,itemName: null
+								,itemCode: null
+								,rent: null
+								,pack: null
+								,itemDescription: null
+								,propertyAddress: null
+								,trade: null
+								,unitPrice: null
+								,netValue: null
+								,totalPrice: null
+								,valueOfGoods: null
+								,insurancePremium: null
+								,customerId: null
+								,customerVer: null
+								,customerNumber: null
+								,contactNumber: null
+								,customerOrderNo: null
+								,customerAddress: null
+							};
+							var addDocModel = new DocUI.model.Doc(addDoc);
+							docStore.insert(docCount+1,addDoc);
+							docStore.load();
+							var detailsarray = [];
+							var detailsrange = currentstore.getRange();
+							Ext.each(detailsrange, function(item) {
+								detailsarray.push(item.data); // push this to the array
+							}, this);
+							Ext.Ajax.request({
+								url: 'http://localhost:8080/docInsert',
+								method: 'POST',
+								jsonData: Ext.util.JSON.encode(addDoc), 
+								headers:
+								{
+									'Content-Type': 'application/json'
+								},
+								success:function(response){
+									Ext.Msg.alert('Success', "Doc was successfully added to the database");
+								},
+								failure: function(){
+									Ext.Msg.alert('Error', "Doc was not added");
+								}
+							});
+							for (var i = 0; i < detailsarray.length; i++) {
+								Ext.Ajax.request({
+									url: 'http://localhost:8080/docDetailsInsert',
+									method: 'POST',
+									jsonData: Ext.util.JSON.encode(addDocDetails),
+									cors: true,
+									success: function (response) {
+										var obj = response.responseText;
+										Ext.Msg.alert('Success', "Document details were successfully added to the database");
+									},
+									failure: function () {
+										Ext.Msg.alert('Error', "Document details were not added to the database");
+									}
+								});
+							}
+							grid.reconfigure(docStore);
+							win.close();
+						}
+					}
 				}]
 			}]
 		}).show();

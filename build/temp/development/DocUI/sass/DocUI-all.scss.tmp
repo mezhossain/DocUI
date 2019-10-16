@@ -8,6 +8,7 @@ $include-docui-store-personnel: dynamic(true);;
 $include-docui-view-doc-doc: dynamic(true);;
 $include-docui-view-doc-doccontroller: dynamic(true);;
 $include-docui-view-doc-docdetails: dynamic(true);;
+$include-docui-view-doc-docdetailsform: dynamic(true);;
 $include-docui-view-doc-docform: dynamic(true);;
 $include-docui-view-doc-docviewmodel: dynamic(true);;
 $include-docui-view-doc-docwindow: dynamic(true);;

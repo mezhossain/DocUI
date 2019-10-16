@@ -9,4 +9,17 @@ Ext.define('DocUI.view.main.MainController', {
 
     alias: 'controller.main',
 
+    newDoc() {
+		var me = this;
+		var win = Ext.create('Ext.Window', {
+			extend: 'Ext.window.Window',
+			title: 'Add Doc',
+			iconCls: 'x-fa fa-plus',
+			modal: true,
+			items: [{
+				xtype: 'docform'
+			}]
+		});
+	}
+
 });

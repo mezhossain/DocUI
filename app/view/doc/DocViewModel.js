@@ -22,20 +22,13 @@ Ext.define('DocUI.view.doc.DocViewModel', {
             autoSync: true,
             autoDestroy: false,
             proxy : {
-                type : 'rest',
+                type : 'ajax',
                 method: 'GET',
-                // headers : {
-                //     'Content-Type' : 'application/xml',
-                //     'Access-Control-Allow-Origin': 'http://10.33.56.125:8080',               
-                // },
-                // cors: true,
-                // useDefaultXhrHeader: false,
-                // withCredentials: true,
-                url: 'docs.json',
-                // url: '/doc',
+                cors: true,
+                url: 'http://localhost:8080/getDoc',
                 reader : {
                     type: 'json',
-                    //rootProperty: 'List',
+                    rootProperty: 'List',
                 },
                 writer : {
                     writeAllFields : true
@@ -53,18 +46,14 @@ Ext.define('DocUI.view.doc.DocViewModel', {
             autoSync: true,
             autoDestroy: false,
             proxy : {
-                type : 'rest',
-                url: 'details.json',
-                // url: '/docDetails',
-                headers : {
-                    'Content-Type' : 'application/xml'
-                },
+                type : 'ajax',
+                method: 'GET',
+                // url: 'details.json',
+                url: 'http://localhost:8080/getDocDetails',
                 cors: true,
-                // useDefaultXhrHeader: false,
-                withCredentials: true,
                 reader : {
                     type: 'json',
-                    rootProperty: 'items'
+                    rootProperty: 'List'
                 },
                 writer : {
                     writeAllFields : true
@@ -74,14 +63,9 @@ Ext.define('DocUI.view.doc.DocViewModel', {
         CurrentDetails: {
             model: 'DocUI.model.DocDetails',
             storeId: 'currentdetails',
-            autoLoad: true,
-            remoteSort: false,
-            remoteFilter: false,
-            autoSync: true,
             autoDestroy: false,
             proxy: {
                 type: 'localstorage',
-                url: 'currentdetails.json',
                 reader: {
                     type: 'json',
                     rootProperty: 'items'
